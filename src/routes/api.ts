@@ -60,7 +60,7 @@ const plugin: FastifyPluginAsync = async (fastify, opts) => {
         }
 
         try {
-            const { stdout, stderr } = await run(cmd);
+            const { stdout, stderr } = await run(cmd, { cwd: project.path });
             return { error: false, stdout, stderr };
         } catch (e) {
             if (e instanceof Error) {
