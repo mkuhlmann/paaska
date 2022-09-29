@@ -3,7 +3,7 @@ import { configuration } from "../configuration";
 import { signJWT, verifyJWT } from "../jwt";
 import { log } from "../log";
 import { paaskaBuild } from "../paas/build";
-import { paaskaStart } from "../paas/start";
+import { paaskaStartProject, paaskaStartService } from "../paas/start";
 
 type PaaskaWebhookToken = {
     service: string;
@@ -34,7 +34,7 @@ const plugin: FastifyPluginAsync = async (fastify, opts) => {
         }
 
         paaskaBuild(service)
-            .then(() => paaskaStart(service.project))
+            .then(() => paaskaStartService(service))
             .then(() => {
                 log.info(`✅ Webhook for ${service.name} successfully executed`);
             })

@@ -95,6 +95,10 @@ class Configuration {
     public getService(name: string) {
         return this.services.find(service => service.key === name);
     }
+
+    public getProject(name: string) {
+        return this.paaska.projects.find(project => project.name === name);
+    }
 }
 
 

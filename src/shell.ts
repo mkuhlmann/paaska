@@ -18,7 +18,6 @@ export const run = async (command: string, { cwd, env }: { cwd?: string, env?: {
         }
 
         const child = child_process.exec(command, { cwd, env }, (error, stdout, stderr) => {
-
             if (error) {
                 log.error(`❌ Failed to execute`);
                 reject(error);

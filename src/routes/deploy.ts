@@ -4,7 +4,7 @@ import { FastifyPluginAsync } from 'fastify';
 import { configuration } from '../configuration';
 import { log } from '../log';
 import { paaskaBuild } from '../paas/build';
-import { paaskaStart } from '../paas/start';
+import { paaskaStartProject, paaskaStartService } from '../paas/start';
 import { run } from '../shell';
 
 
@@ -29,7 +29,7 @@ const plugin: FastifyPluginAsync = async (fastify, opts) => {
 
         try {
             await paaskaBuild(service);
-            await paaskaStart(service.project);
+            await paaskaStartService(service);
         } catch (e) {
             if (e instanceof Error) {
                 return { error: true, message: e.message };
