@@ -17,7 +17,7 @@ const plugin: FastifyPluginAsync = async (fastify, opts) => {
         Body: {
             service: string;
         }
-    }>('/api/push', async (request, reply) => {
+    }>('/api/deploy', async (request, reply) => {
         await configuration.loadDockerCompose();
         const serviceName = request.body.service;
 

@@ -24,10 +24,19 @@ export const paaskaBuild = async (service: PaaskaService) => {
 
 
 
+        let gitSshCommand = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
+        if (service.labels['paaska.sshKey']) {
+            const sshKeyPath = path.join(service.project.path, service.labels['paaska.sshKey']);
+            if (!fs.existsSync(sshKeyPath)) {
+                throw new Error(`SSH Key ${sshKeyPath} does not exist`);
+            }
+            gitSshCommand += ` -i ${sshKeyPath}`;
+        }
+
         if (fs.existsSync(buildPath)) {
             log.info(`🔃 Pulling git repo ${repo}`);
             try {
-                let { stdout, stderr } = await run(`git pull --depth 1`, { cwd: buildPath });
+                let { stdout, stderr } = await run(`git pull --depth 1`, { cwd: buildPath, env: { GIT_SSH_COMMAND: gitSshCommand } });
             } catch (e) {
                 log.error(`Error pulling repo ${repo}`, e);
                 return { error: true, message: `Failed to pull repo ${repo}` };
@@ -36,7 +45,7 @@ export const paaskaBuild = async (service: PaaskaService) => {
 
         } else {
             log.info(`⬇️ Cloning repo ${repo}`);
-            let { stdout, stderr } = await run(`git clone --depth 1 ${repo} ${buildPath}`);
+            let { stdout, stderr } = await run(`git clone --depth 1 ${repo} ${buildPath}`, { env: { GIT_SSH_COMMAND: gitSshCommand } });
         }
 
 

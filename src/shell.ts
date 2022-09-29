@@ -5,7 +5,7 @@ import { log } from './log';
 import { configuration } from './configuration';
 const exec = util.promisify(child_process.exec);
 
-export const run = async (command: string, { cwd }: { cwd?: string } = {}) => {
+export const run = async (command: string, { cwd, env }: { cwd?: string, env?: { [key: string]: string } } = {}) => {
     const ts = Date.now();
     log.info(`💻 Executing ${command}` + (cwd ? ` (cwd: ${cwd})` : ''));
 
@@ -14,7 +14,7 @@ export const run = async (command: string, { cwd }: { cwd?: string } = {}) => {
         return { 'stdout': '', 'stderr': '' };
     }
 
-    const { stdout, stderr } = await exec(command, { cwd });
+    const { stdout, stderr } = await exec(command, { cwd, env });
 
     log.info(`✅ Executed in ${Math.round(Date.now() - ts / 100) / 10} s`);
     return { stdout, stderr };

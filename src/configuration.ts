@@ -46,7 +46,7 @@ class Configuration {
     }
 
     public loadConfigurationSync() {
-        const yaml = fs.readFileSync(getPath('paasker.yml'), 'utf8');
+        const yaml = fs.readFileSync(getPath('paaska.yml'), 'utf8');
 
         this.paaska = parse(yaml) as PaaskaConfig;
 
