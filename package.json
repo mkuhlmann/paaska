@@ -1,0 +1,22 @@
+{
+  "name": "paasker",
+  "dependencies": {
+    "@fastify/autoload": "^5.4.0",
+    "@fastify/cors": "^8.1.0",
+    "dotenv": "^16.0.2",
+    "fastify": "^4.6.0",
+    "jose": "^4.10.0",
+    "ts-node": "^10.9.1",
+    "yaml": "^2.1.1"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "NODE_ENV=production ts-node --transpile-only src/index.ts",
+    "dev": "ts-node-dev --respawn src/index.ts"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0"
+  }
+}

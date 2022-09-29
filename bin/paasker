@@ -1,0 +1,5 @@
+#!/bin/sh
+
+BASE=$(dirname $0)/..
+
+$BASE/node_modules/.bin/ts-node --project $BASE/tsconfig.json $BASE/src/index.ts "$@"
