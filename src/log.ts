@@ -16,7 +16,7 @@ export type Log = LogFn & {
     debug: (...p: any[]) => void
 }
 
-type LogLevel = keyof typeof colors
+type LogLevel = keyof typeof colors;
 
 const formatDate = (date: Date) => {
     return [date.getHours(), date.getMinutes(), date.getSeconds()]
@@ -24,16 +24,14 @@ const formatDate = (date: Date) => {
         .join(':')
 }
 
-/**
- * Logs a message to the console. The level is displayed in ANSI colors,
- * either bright red in case of an error or green otherwise.
- */
 export const makeLog = function (quiet = false, timestamp = true, debug = false): Log {
     function log(msg: string, level: LogLevel) {
         if (quiet && level === 'info') return
-        if (timestamp) msg = color(formatDate(new Date()), '30;1') + ' ' + msg
-        const c = colors[level.toLowerCase() as LogLevel] || '32'
-        console.log('[' + color(level.toUpperCase(), c) + '] ' + msg)
+        if (timestamp) msg = color(formatDate(new Date()), '30;1') + '  ' + msg
+        const c = colors[level.toLowerCase() as LogLevel] || '32';
+
+        let levelStr = '[' + color(level.toUpperCase(), c) + ']' + ' '.repeat(6 - level.length);
+        console.log(levelStr + msg)
     }
 
     function color(s: string, c: string) {
@@ -59,7 +57,7 @@ export const makeLog = function (quiet = false, timestamp = true, debug = false)
         log(util.format(...arguments), 'error')
     }
 
-    return log as Log
+    return log as Log;
 }
 
 

@@ -1,4 +1,4 @@
-import { PaaskaService } from '../configuration';
+import { configuration, PaaskaService } from '../configuration';
 import fs from 'fs';
 import path from 'path';
 import { log } from '../log';
@@ -25,7 +25,7 @@ export const paaskaBuild = async (service: PaaskaService) => {
 
 
         if (fs.existsSync(buildPath)) {
-            log.info(`🔃 Pulling repo ${repo}`);
+            log.info(`🔃 Pulling git repo ${repo}`);
             try {
                 let { stdout, stderr } = await run(`git pull --depth 1`, { cwd: buildPath });
             } catch (e) {
@@ -42,14 +42,14 @@ export const paaskaBuild = async (service: PaaskaService) => {
 
         if (service.build) {
             log.info(`🔨 Building ${service.name} with docker compose build`);
-            let { stdout, stderr } = await run(`docker compose -p ${service.project.name} -f ${service.project.file} build ${service.name}`, { cwd: service.project.path });
+            let { stdout, stderr } = await run(`${configuration.dockerComposeBinary} -p ${service.project.name} -f ${service.project.file} build ${service.name}`, { cwd: service.project.path });
         } else if (service.image) {
             log.info(`🔨 Building ${service.name} with docker build`);
             let { stdout, stderr } = await run(`docker build -t ${image} ${buildPath}`, { cwd: service.project.path });
         }
 
     } else if (service.image) {
-        log.info(`🔃 Pulling ${service.name}`);
+        log.info(`🔃 Pulling docker image ${service.name}`);
         let { stdout, stderr } = await run(`docker pull ${service.image}`);
     }
 

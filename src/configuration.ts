@@ -36,6 +36,8 @@ class Configuration {
     public paaska: PaaskaConfig;
     public services: PaaskaService[] = [];
 
+    public dockerComposeBinary: string = 'docker-compose';
+
 
     constructor() {
         this.paaska = {} as PaaskaConfig; // hacky hack

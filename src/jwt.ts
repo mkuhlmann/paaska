@@ -16,7 +16,6 @@ export const signJWT = async (payload: any) => {
 
 export const verifyJWT = async <T>(token: string): Promise<T> => {
     const key = createSecretKey(Buffer.from(configuration.paaska.secret, 'base64'));
-
     const { payload, protectedHeader } = await jwtVerify(token, key);
 
     return payload as T;

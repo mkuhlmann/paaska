@@ -9,11 +9,14 @@ import fs from 'fs';
 import { configuration } from './configuration';
 import { getPaaskerPath } from './util';
 import { log } from './log';
+import { run, searchBinaries } from './shell';
 
 
 if (!fs.existsSync(getPaaskerPath())) {
     fs.mkdirSync(getPaaskerPath(), { recursive: true });
 }
+
+// fastify
 
 const fastify = Fastify({
     logger: false
@@ -46,5 +49,8 @@ fastify.listen({ host: '0.0.0.0', port: 9000 }, async (err, address) => {
         console.error(err)
         process.exit(1)
     }
+
     console.log(`🚀 Server ready at: ${address}`);
+
+    await searchBinaries();
 });
