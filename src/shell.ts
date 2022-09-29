@@ -9,15 +9,30 @@ export const run = async (command: string, { cwd, env }: { cwd?: string, env?: {
     const ts = Date.now();
     log.info(`💻 Executing ${command}` + (cwd ? ` (cwd: ${cwd})` : ''));
 
-    if (process.env.DRY_RUN) {
-        log.info(`✅ Dry run, skipping execution`);
-        return { 'stdout': '', 'stderr': '' };
-    }
+    return new Promise<{ stdout: string, stderr: string }>((resolve, reject) => {
 
-    const { stdout, stderr } = await exec(command, { cwd, env });
+        if (process.env.DRY_RUN) {
+            log.info(`✅ Dry run, skipping execution`);
+            resolve({ 'stdout': '', 'stderr': '' });
+            return;
+        }
 
-    log.info(`✅ Executed in ${Math.round(Date.now() - ts / 100) / 10} s`);
-    return { stdout, stderr };
+        const child = child_process.exec(command, { cwd, env }, (error, stdout, stderr) => {
+
+            if (error) {
+                log.error(`❌ Failed to execute`);
+                reject(error);
+            } else {
+                log.info(`✅ Executed  ${Math.round((Date.now() - ts) / 100) / 10} s`);
+                resolve({ stdout, stderr });
+            }
+        });
+
+        child.stdout?.pipe(process.stdout);
+        child.stderr?.pipe(process.stderr);
+
+    });
+
 };
 
 
