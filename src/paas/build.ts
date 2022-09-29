@@ -36,7 +36,8 @@ export const paaskaBuild = async (service: PaaskaService) => {
         if (fs.existsSync(buildPath)) {
             log.info(`🔃 Pulling git repo ${repo}`);
             try {
-                let { stdout, stderr } = await run(`git pull --depth 1`, { cwd: buildPath, env: { GIT_SSH_COMMAND: gitSshCommand } });
+                await run(`git reset --hard`, { cwd: buildPath });
+                await run(`git pull --depth 1`, { cwd: buildPath, env: { GIT_SSH_COMMAND: gitSshCommand } });
             } catch (e) {
                 log.error(`Error pulling repo ${repo}`, e);
                 return { error: true, message: `Failed to pull repo ${repo}` };
