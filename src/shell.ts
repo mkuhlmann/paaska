@@ -52,12 +52,12 @@ export const searchBinaries = async () => {
         error = true;
     }
 
-    if (await searchBinary('docker-compose version')) {
-        log.info(`✅ Found docker-compose`);
+    if (await searchBinary('docker compose version')) {
+        log.info(`✅ Found docker compose`);
     } else {
-        if (await searchBinary('docker compose version')) {
-            log.info(`✅ Found docker compose`);
-            configuration.dockerComposeBinary = 'docker compose';
+        if (await searchBinary('docker-compose version')) {
+            log.info(`✅ Found docker-compose`);
+            configuration.dockerComposeBinary = 'docker-compose';
         } else {
             log.error(`❌ docker compose not found`);
             error = true;
