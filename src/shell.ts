@@ -65,7 +65,7 @@ export const searchBinaries = async () => {
     }
 
     if (error) {
-        log.warn(`⚠️ Some binaries are missing, setting DRY_RUN`);
+        log.warn(`⚠️  Some binaries are missing, setting DRY_RUN=1`);
         process.env.DRY_RUN = 'true';
     }
 

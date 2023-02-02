@@ -50,7 +50,7 @@ fastify.listen({ host: '0.0.0.0', port: 9000 }, async (err, address) => {
         process.exit(1)
     }
 
-    console.log(`🚀 Server ready at: ${address}`);
+   log.info(`🚀 Server ready at: ${address}`);
 
     await searchBinaries();
 });
