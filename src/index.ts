@@ -11,46 +11,44 @@ import { getPaaskerPath } from './util';
 import { log } from './log';
 import { run, searchBinaries } from './shell';
 
-
 if (!fs.existsSync(getPaaskerPath())) {
-    fs.mkdirSync(getPaaskerPath(), { recursive: true });
+	fs.mkdirSync(getPaaskerPath(), { recursive: true });
 }
 
 // fastify
 
 const fastify = Fastify({
-    logger: false
+	logger: false,
 });
 
-fastify.register(fastifyCors, {
-
-});
+fastify.register(fastifyCors, {});
 
 // basic api auth
 fastify.addHook('onRequest', async (request, reply) => {
-    log.info(`---------- ${request.method} ${request.url} ----------`);
+	log.info(`---------- ${request.method} ${request.url} ----------`);
 
-    if (request.url.startsWith('/api')) {
-        const token = request.headers.authorization?.replace('Bearer ', '') ?? '';
+	if (request.url.startsWith('/api')) {
+		const token = request.headers.authorization?.replace('Bearer ', '') ?? '';
 
-        if (!token || !configuration.paaska.api.keys.includes(token)) {
-            return reply.code(401).send({ error: 'Unauthorized' });
-        }
-    }
+		if (!token || !configuration.paaska.api.keys.includes(token)) {
+			return reply.code(401).send({ error: 'Unauthorized' });
+		}
+	}
 });
 
 fastify.register(fastifyAutoload, {
-    dir: __dirname + '/routes',
-    dirNameRoutePrefix: false
+	dir: __dirname + '/routes',
+	dirNameRoutePrefix: false,
 });
 
 fastify.listen({ host: '0.0.0.0', port: 9000 }, async (err, address) => {
-    if (err) {
-        console.error(err)
-        process.exit(1)
-    }
+	if (err) {
+		console.error(err);
+		process.exit(1);
+	}
 
-   log.info(`🚀 Server ready at: ${address}`);
+	log.info(`🚀 Server ready at: ${address}`);
 
-    await searchBinaries();
+	await searchBinaries();
+	await configuration.loadDockerCompose();
 });
