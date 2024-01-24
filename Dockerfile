@@ -1,4 +1,4 @@
-FROM node:alpine-3.18
+FROM node:alpine3.18
 
 RUN apk add --no-cache docker-cli docker-cli-compose git openssh-client ca-certificates
 
