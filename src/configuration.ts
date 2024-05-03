@@ -27,7 +27,10 @@ export type PaaskaConfig = {
 export type PaaskaService = {
 	name: string;
 	key: string;
-	build?: string;
+	build?: {
+		context: string;
+		dockerfile: string;
+	};
 	image?: string;
 
 	labels: { [key: string]: string };

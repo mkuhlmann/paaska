@@ -8,7 +8,10 @@ export type DockerCompose = {
 
 export type DockerComposeService = {
 	image?: string;
-	build?: string;
+	build?: {
+		context: string;
+		dockerfile: string;
+	};
 	command?: string;
 	ports?: string[];
 	volumes?: string[];
